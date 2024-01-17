@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/ressourceszones")
+@RequestMapping("/api/ressourceszones")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RessourcesZoneController {
     private RessourcesZoneRepository ressourcesZoneRepository;
 
@@ -44,7 +45,7 @@ public class RessourcesZoneController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/ressourceszone")
     public ResponseEntity<RessourcesZone> saveRessourcesZone(@RequestBody RessourcesZone ressourcesZone) {
         RessourcesZone savedRessourcesZone = ressourcesZoneService.saveRessourcesZone(ressourcesZone);
         return new ResponseEntity<>(savedRessourcesZone, HttpStatus.CREATED);

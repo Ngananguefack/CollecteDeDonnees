@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/zones")
+@RequestMapping("/api/zones")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ZoneController {
     private ZoneRepository zoneRepository;
 
@@ -44,7 +45,7 @@ public class ZoneController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/zone")
     public ResponseEntity<Zone> saveZone(@RequestBody Zone zone) {
         Zone savedZone = zoneService.saveZone(zone);
         return new ResponseEntity<>(savedZone, HttpStatus.CREATED);

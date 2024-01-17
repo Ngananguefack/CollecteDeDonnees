@@ -58,22 +58,32 @@ public class LocaliteController {
 
     @PostMapping("/import/excel")
     public ResponseEntity<String> importExcel(@RequestParam("file") MultipartFile file) {
+        System.out.println("---Importation en cours----");
         if (file == null || file.isEmpty()) {
+            System.out.println("---Fichier null----");
             return ResponseEntity.badRequest().body("Please upload a file!");
         }
+        // else{
+        //     System.out.println("Aucun fichier selectionner");
+        // }
+
 
         try {
             localiteService.saveExcelData(localiteRepository, file.getInputStream());
+
             return ResponseEntity.ok("Data imported successfully!");
-        } catch (IOException e) {
+         } catch (IOException e) {
             // Log the exception or handle it as needed
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing data: " + e.getMessage());
         }
+
     }
 
     @PostMapping("/import/pdf")
     public ResponseEntity<String> importPdf(@RequestParam("file") MultipartFile file) {
+        System.out.println("---Importation en cours----");
         if (file == null || file.isEmpty()) {
+            System.out.println("---Importation termine car fichier null----");
             return ResponseEntity.badRequest().body("Please upload a file!");
         }
 
@@ -81,7 +91,7 @@ public class LocaliteController {
             localiteService.savePdfData(localiteRepository, file.getInputStream());
             return ResponseEntity.ok("Data imported successfully!");
         } catch (IOException e) {
-            // Log the exception or handle it as needed
+            
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing data: " + e.getMessage());
         }
 

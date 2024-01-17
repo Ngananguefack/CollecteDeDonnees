@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/regions")
+@RequestMapping("/api/regions")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RegionController {
     private RegionRepository regionRepository;
 
@@ -44,7 +45,7 @@ public class RegionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/region")
     public ResponseEntity<Region> saveRegion(@RequestBody Region region) {
         Region savedRegion = regionService.saveRegion(region);
         return new ResponseEntity<>(savedRegion, HttpStatus.CREATED);

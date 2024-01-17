@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/senateurs")
+@RequestMapping("/api/senateurs/")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class SenateurController {
     private SenateurRepository senateurRepository;
 
@@ -44,7 +46,7 @@ public class SenateurController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("senateur")
     public ResponseEntity<Senateur> saveSenateur(@RequestBody Senateur senateur) {
         Senateur savedSenateur = senateurService.saveSenateur(senateur);
         return new ResponseEntity<>(savedSenateur, HttpStatus.CREATED);
