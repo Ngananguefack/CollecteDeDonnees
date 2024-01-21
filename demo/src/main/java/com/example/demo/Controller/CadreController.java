@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cadres")
+@RequestMapping("/api/cadres")
 public class CadreController {
 
     private CadreRepository cadreRepository;

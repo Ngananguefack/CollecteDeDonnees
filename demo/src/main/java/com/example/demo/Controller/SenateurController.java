@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/senateurs/")
+@RequestMapping("/api/senateurs")
 @CrossOrigin(origins = "http://localhost:3000")
 
 public class SenateurController {
