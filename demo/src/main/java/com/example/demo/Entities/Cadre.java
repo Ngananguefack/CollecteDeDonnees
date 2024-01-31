@@ -8,15 +8,28 @@ import lombok.Data;
 @Table(name="Cadre")
 public class Cadre {
 
+    public int NumEnregistrement;
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     public int idCadre;
+    public  int idSecteur;
+    public  int idChapitre;
+    public  int idProgramme;
+    public  int idAction;
+    public  int idActivite;
     public int CNiveau;
     public String Cadre;
     public String Accessible;
 
-    public Cadre(int idCadre, int CNiveau, String cadre, String accessible) {
+    public Cadre(int numEnregistrement, int idCadre, int idSecteur, int idChapitre, int idProgramme, int idAction, int idActivite, int CNiveau, String cadre, String accessible) {
+        NumEnregistrement = numEnregistrement;
         this.idCadre = idCadre;
+        this.idSecteur = idSecteur;
+        this.idChapitre = idChapitre;
+        this.idProgramme = idProgramme;
+        this.idAction = idAction;
+        this.idActivite = idActivite;
         this.CNiveau = CNiveau;
         Cadre = cadre;
         Accessible = accessible;
@@ -42,6 +55,58 @@ public class Cadre {
         Accessible = string;
     }
 
+    public void setNumEnregistrement(int numEnregistrement) {
+        NumEnregistrement = numEnregistrement;
+    }
+
+    public void setIdSecteur(int idSecteur) {
+        this.idSecteur = idSecteur;
+    }
+
+    public void setIdChapitre(int idChapitre) {
+        this.idChapitre = idChapitre;
+    }
+
+    public void setIdProgramme(int idProgramme) {
+        this.idProgramme = idProgramme;
+    }
+
+    public void setIdAction(int idAction) {
+        this.idAction = idAction;
+    }
+
+    public void setIdActivite(int idActivite) {
+        this.idActivite = idActivite;
+    }
+
+    public int getNumEnregistrement() {
+        return NumEnregistrement;
+    }
+
+    public int getIdCadre() {
+        return idCadre;
+    }
+
+    public int getIdSecteur() {
+        return idSecteur;
+    }
+
+    public int getIdChapitre() {
+        return idChapitre;
+    }
+
+    public int getIdProgramme() {
+        return idProgramme;
+    }
+
+    public int getIdAction() {
+        return idAction;
+    }
+
+    public int getIdActivite() {
+        return idActivite;
+    }
+
     public int getCNiveau() {
         return CNiveau;
     }
@@ -53,6 +118,7 @@ public class Cadre {
     public String getAccessible() {
         return Accessible;
     }
+
 
     @Override
     public String toString() {

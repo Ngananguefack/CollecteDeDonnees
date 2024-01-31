@@ -11,8 +11,8 @@ import com.spire.pdf.utilities.PdfTable;
 import com.spire.pdf.utilities.PdfTableExtractor;
 
 import lombok.Data;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,37 +48,116 @@ public class PaysService {
 
     public void saveExcelData(PaysRepository paysRepository, InputStream inputStream) throws IOException {
         Set<Pays> pays = new HashSet<Pays>();
+        Workbook workbook;
         try {
-            Workbook workbook = WorkbookFactory.create(inputStream);
+            workbook = WorkbookFactory.create(inputStream);
 
-            workbook.getSheetAt(0).forEach(row -> {
-
-                if (row.getRowNum() > 0) {
-
-                    Pays pays1= new Pays();
-                    pays1.setNumEnregistrement((int) row.getCell(0).getNumericCellValue() );
-                    pays1.setCodePays((int) row.getCell(1).getNumericCellValue());
-                    pays1.setLibelle(row.getCell(2).getStringCellValue());
-                    pays1.setMasculin((int) row.getCell(3).getNumericCellValue());
-                    pays1.setFeminin((int) row.getCell(4).getNumericCellValue());
-                    pays1.setTotal((int) row.getCell(5).getNumericCellValue());
-                    pays1.setAccessible(row.getCell(6).getStringCellValue());
-                    pays1.setDateCreation(row.getCell(7).getStringCellValue());
-                    pays1.setDensite(row.getCell(8).getStringCellValue());
-                    pays1.setSuperficie((int) row.getCell(9).getNumericCellValue());
-                    pays1.setNbRegion((int) row.getCell(10).getNumericCellValue());
-                    pays1.setNbDepartement((int) row.getCell(11).getNumericCellValue());
-                    pays1.setNbCommune((int) row.getCell(12).getNumericCellValue());
-                    pays1.setNbLocalite((int) row.getCell(13).getNumericCellValue());
-                    pays1.setDateIndependance(row.getCell(14).getStringCellValue());
-                    pays1.setDateReunification(row.getCell(15).getStringCellValue());
-                    pays1.setDateUnification(row.getCell(16).getStringCellValue());
-
-                    pays.add(pays1);
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    continue; // Skip the header row
                 }
 
+                Pays pays1 = new Pays();
+                Cell cell;
 
-            });
+                cell = CellUtil.getCell(row, 0);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setNumEnregistrement((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 1);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setCodePays((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 2);
+                if (cell != null) {
+                    pays1.setLibelle(cell.getStringCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 3);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setMasculin((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 4);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setFeminin((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 5);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setTotal((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 6);
+                if (cell != null) {
+                    if (cell.getCellType() == CellType.STRING) {
+                        pays1.setAccessible(cell.getStringCellValue());
+                    } else if (cell.getCellType() == CellType.NUMERIC) {
+                        pays1.setAccessible(String.valueOf((int) cell.getNumericCellValue()));
+                    }
+                }
+
+                cell = CellUtil.getCell(row, 7);
+                if (cell != null) {
+                    if (cell.getCellType() == CellType.STRING) {
+                        pays1.setDateCreation(cell.getStringCellValue());
+                    } else if (cell.getCellType() == CellType.NUMERIC) {
+                        pays1.setDateCreation(String.valueOf((int) cell.getNumericCellValue()));
+                    }
+                }
+
+                cell = CellUtil.getCell(row, 8);
+                if (cell != null) {
+                    if (cell.getCellType() == CellType.STRING) {
+                        pays1.setDensite(cell.getStringCellValue());
+                    } else if (cell.getCellType() == CellType.NUMERIC) {
+                        pays1.setDensite(String.valueOf((int) cell.getNumericCellValue()));
+                    }
+                }
+                cell = CellUtil.getCell(row, 9);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setSuperficie((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 10);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setNbRegion((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 11);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setNbDepartement((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 12);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setNbCommune((int) cell.getNumericCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 13);
+                if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                    pays1.setNbLocalite((int) cell.getNumericCellValue());
+                }
+                cell = CellUtil.getCell(row, 14);
+                if (cell != null) {
+                    pays1.setDateIndependance(cell.getStringCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 15);
+                if (cell != null) {
+                    pays1.setDateReunification(cell.getStringCellValue());
+                }
+
+                cell = CellUtil.getCell(row, 16);
+                if (cell != null) {
+                    pays1.setDateUnification(cell.getStringCellValue());
+                }
+
+                pays.add(pays1);
+            }
 
             paysRepository.saveAll(pays);
 
@@ -88,7 +167,6 @@ public class PaysService {
             e.printStackTrace();
         }
     }
-
         private InputStream getFilePaths() throws IOException {
     InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_localite.pdf");
     return inputStream;

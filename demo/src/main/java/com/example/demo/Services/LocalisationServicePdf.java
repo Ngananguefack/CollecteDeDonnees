@@ -57,9 +57,13 @@ public class LocalisationServicePdf {
                         localite.setPNombreMenage(Integer.parseInt(PNombreMenage.trim()));
                         String PPopulation=table.getText(i, j+3);
                         localite.setPPolutaion(Integer.parseInt(PPopulation.trim()));
-                        localite.setIEEcodeMaternelle(table.getText(i, j+4));
-                        localite.setIEEcodePrimaire(table.getText(i, j+5));
-                        localite.setIEEcodeSecondaire(table.getText(i, j+6));
+
+                    String IEEcoleMaternelle= table.getText(i,j+4);
+                    localite.setIEEcoleMaternelle(Integer.parseInt(IEEcoleMaternelle.trim()));
+                    String IEEcolePrimaire= table.getText(i,j+5);
+                    localite.setIEEcolePrimaire(Integer.parseInt(IEEcolePrimaire.trim()));
+                    String IEEcoleSecondaire= table.getText(i,j+6);
+                    localite.setIEEcoleSecondaire(Integer.parseInt(IEEcoleSecondaire.trim()));
                         
                         localites.add(localite);
                 }

@@ -8,8 +8,8 @@ import com.spire.pdf.PdfDocument;
 import com.spire.pdf.utilities.PdfTable;
 import com.spire.pdf.utilities.PdfTableExtractor;
 
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,26 +43,96 @@ public class CadreService {
     }
 
     public void saveExcelData(CadreRepository cadreRepository, InputStream inputStream) throws IOException {
-        Set<Cadre> cadres = new HashSet<Cadre>();
-        try {
-            Workbook workbook = WorkbookFactory.create(inputStream);
+        Set<Cadre> cadres = new HashSet<>();
+        Workbook workbook = null;
 
-            workbook.getSheetAt(0).forEach(row -> {
-                Cadre cadre= new Cadre();
-                cadre.setIdCadre((int) row.getCell(0).getNumericCellValue());
-                cadre.setCNiveau((int)row.getCell(1).getNumericCellValue());
-                cadre.setCadre(row.getCell(2).getStringCellValue());
-                cadre.setAccessible(row.getCell(3).getStringCellValue());
+        try {
+            workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    continue; // Skip the header row
+                }
+
+                Cadre cadre = new Cadre();
+
+                for (int i = 0; i <= 9; i++) {
+                    Cell cell = CellUtil.getCell(row, i);
+                    if (cell != null) {
+                        switch (i) {
+                            case 0:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setNumEnregistrement((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 1:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setIdCadre((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 2:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setIdSecteur((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 3:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setIdChapitre((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 4:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setIdProgramme((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 5:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setIdAction((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 6:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setIdActivite((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 7:
+                                if (cell.getCellType() == CellType.STRING) {
+                                    cadre.setCadre(cell.getStringCellValue());
+                                } else if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setCadre(String.valueOf((int) cell.getNumericCellValue()));
+                                }
+                                break;
+                            case 8:
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setCNiveau((int) cell.getNumericCellValue());
+                                }
+                                break;
+                            case 9:
+                                if (cell.getCellType() == CellType.STRING) {
+                                    cadre.setAccessible(cell.getStringCellValue());
+                                } else if (cell.getCellType() == CellType.NUMERIC) {
+                                    cadre.setAccessible(String.valueOf((int) cell.getNumericCellValue()));
+                                }
+                                break;
+                            default:
+                                // Handle unknown columns or ignore them
+                                break;
+                        }
+                    }
+                }
 
                 cadres.add(cadre);
-            });
+            }
 
             cadreRepository.saveAll(cadres);
 
-            workbook.close();
-
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (workbook != null) {
+                workbook.close();
+            }
         }
     }
 

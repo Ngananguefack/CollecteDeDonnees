@@ -36,9 +36,9 @@ public class ImportService {
                 localite.setLibelle(row.getCell(1).getStringCellValue());
                 localite.setPNombreMenage((int) row.getCell(2).getNumericCellValue());
                 localite.setPPolutaion((float) row.getCell(3).getNumericCellValue());
-                localite.setIEEcodeMaternelle(row.getCell(4).getStringCellValue());
-                localite.setIEEcodePrimaire(row.getCell(5).getStringCellValue());
-                localite.setIEEcodeSecondaire(row.getCell(6).getStringCellValue());
+                localite.setIEEcoleMaternelle((int)row.getCell(4).getNumericCellValue());
+                localite.setIEEcolePrimaire((int)row.getCell(5).getNumericCellValue());
+                localite.setIEEcoleSecondaire((int)row.getCell(6).getNumericCellValue());
 
                 localites.add(localite);
             });
